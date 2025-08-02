@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contagem para a Colação</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      background: url(https://i.imgur.com/mOg5KMs.jpeg) no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.65);
+      z-index: 0;
+    }
+
+    .header {
+      position: absolute;
+      top: 20px;
+      width: 100%;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .header h1 {
+      font-size: 3em;
+      margin: 0;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      text-align: center;
+    }
+
+    #countdown {
+      font-size: 2.5em;
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 20px 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(255,255,255,0.6), 0 0 50px rgba(0,0,0,0.8);
+      color: #fff;
+      font-weight: bold;
+      text-shadow: 2px 2px 5px #000;
+      animation: pulse 2s infinite;
+    }
+
+    h2 {
+      font-weight: 400;
+      font-size: 1.5em;
+      margin-bottom: 30px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+      position: absolute;
+      bottom: 60px;
+      width: 100%;
+      text-align: center;
+      z-index: 3;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .progress-container {
+      position: absolute;
+      bottom: 20px;
+      width: 80%;
+      left: 10%;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      height: 20px;
+      overflow: hidden;
+      z-index: 2;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(to right, #4CAF50, #2E7D32);
+      transition: width 1s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Contagem Regressiva</h1>
+  </div>
+  <div class="content">
+    <div id="countdown"></div>
+  </div>
+  <h2>Turma 2 UEG – 16 de Dezembro de 2025 às 20h</h2>
+  <div class="progress-container">
+    <div id="progress-bar" class="progress-bar"></div>
+  </div>
+
+  <script>
+    const targetDate = new Date("2025-12-16T20:00:00-03:00");
+    const startDate = new Date("2020-01-01T00:00:00-03:00"); // ciclo de 72 meses = 6 anos
+
+    function updateCountdown() {
+      const now = new Date();
+      let diff = targetDate - now;
+
+      if (diff <= 0) {
+        document.getElementById("countdown").innerHTML = "É HOJE! 🥳";
+        document.getElementById("progress-bar").style.width = "100%";
+        return;
+      }
+
+      const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / 1000 / 60) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      document.getElementById("countdown").innerHTML =
+        `${totalDays} dias, ${hours}h ${minutes}min ${seconds}s`;
+
+      const totalDuration = targetDate - startDate;
+      const elapsed = now - startDate;
+      const progress = Math.min(100, (elapsed / totalDuration) * 100);
+      document.getElementById("progress-bar").style.width = `${progress}%`;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
